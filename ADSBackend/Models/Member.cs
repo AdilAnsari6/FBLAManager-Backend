@@ -17,6 +17,8 @@ namespace ADSBackend.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        public string FullName { get; set; }
+
         public string Gender { get; set; }
 
         public string Address { get; set; }
@@ -37,6 +39,13 @@ namespace ADSBackend.Models
 
         public string Phone { get; set; }
 
+        [Display(Name = "Profile Picture")]
+        public string profileImageSource { get; set; }
+
+        [Display(Name = "Bio")]
+        public string Description { get; set; }
+
+        [Required]
         public string Password { get; set; }
 
         public string Salt { get; set; }

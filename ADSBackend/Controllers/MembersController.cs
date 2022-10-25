@@ -31,16 +31,18 @@ namespace ADSBackend.Controllers
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
+                .OrderBy(m => m.LastName)
                 .ToListAsync();
 
             if (!String.IsNullOrEmpty(search))
             {
                 members = await _context.Member
-                .Where(s => s.LastName.Contains(search) || s.FirstName.Contains(search))
+                .Where(s => s.FullName.Contains(search))
                 .Include(m => m.ClubMembers)
                 .ThenInclude(cm => cm.Club)
                 .Include(meet => meet.MeetingAttendees)
                 .ThenInclude(ma => ma.Meeting)
+                .OrderBy(m => m.LastName)
                 .ToListAsync();
             }
 
@@ -85,7 +87,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Gender,Address,City,ZipCode,Grade,RecruitedBy,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Gender,Address,City,ZipCode,Grade,RecruitedBy,profileImageSource,Description,Email,Phone,Password,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -95,6 +97,7 @@ namespace ADSBackend.Controllers
                 {
                     FirstName = vm.FirstName,
                     LastName = vm.LastName,
+                    FullName = vm.FirstName + " " + vm.LastName,
                     Gender = vm.Gender,
                     Address = vm.Address,
                     City = vm.City,
@@ -103,6 +106,8 @@ namespace ADSBackend.Controllers
                     RecruitedBy = vm.RecruitedBy,
                     Email = vm.Email,
                     Phone = vm.Phone,
+                    profileImageSource = vm.profileImageSource,
+                    Description = vm.Description,
                     Password = ph.HashedPassword,
                     Salt = ph.Salt
                 };
@@ -176,7 +181,7 @@ namespace ADSBackend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,FirstName,LastName,Gender,Address,City,ZipCode,Grade,Email,Phone,ClubIds,MeetingIds")] MemberViewModel vm)
+        public async Task<IActionResult> Edit(int id, [Bind("MemberId,FirstName,LastName,Gender,Address,City,ZipCode,Grade,Email,Phone,profileImageSource,Description,ClubIds,MeetingIds")] MemberViewModel vm)
         {
             var member = await _context.Member
                 .Include(m => m.ClubMembers)
@@ -189,12 +194,15 @@ namespace ADSBackend.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Password");
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     member.FirstName = vm.FirstName;
                     member.LastName = vm.LastName;
+                    member.FullName = vm.FirstName + " " + vm.LastName;
                     member.Gender = vm.Gender;
                     member.Address = vm.Address;
                     member.City = vm.City;
@@ -202,6 +210,8 @@ namespace ADSBackend.Controllers
                     member.Grade = vm.Grade;
                     member.Email = vm.Email;
                     member.Phone = vm.Phone;
+                    member.profileImageSource = vm.profileImageSource;
+                    member.Description = vm.Description;
 
                     _context.Update(member);
                     await _context.SaveChangesAsync();

@@ -31,11 +31,17 @@ namespace ADSBackend.Migrations
 
                     b.Property<DateTime>("EditedTime");
 
+                    b.Property<string>("ImageURL");
+
                     b.Property<string>("Message");
 
                     b.Property<DateTime>("PostTime");
 
+                    b.Property<string>("Status");
+
                     b.Property<string>("Title");
+
+                    b.Property<DateTime>("WriteTime");
 
                     b.HasKey("PostId");
 
@@ -88,6 +94,25 @@ namespace ADSBackend.Migrations
                     b.HasKey("Key");
 
                     b.ToTable("ConfigurationItem");
+                });
+
+            modelBuilder.Entity("ADSBackend.Models.FAQ", b =>
+                {
+                    b.Property<int>("FAQId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Answer");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<DateTime>("Edited");
+
+                    b.Property<string>("Question");
+
+                    b.HasKey("FAQId");
+
+                    b.ToTable("FAQ");
                 });
 
             modelBuilder.Entity("ADSBackend.Models.Identity.ApplicationRole", b =>
@@ -231,9 +256,13 @@ namespace ADSBackend.Migrations
 
                     b.Property<string>("City");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<string>("FullName");
 
                     b.Property<string>("Gender");
 
@@ -241,7 +270,8 @@ namespace ADSBackend.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<string>("Phone");
 
@@ -252,6 +282,8 @@ namespace ADSBackend.Migrations
                     b.Property<string>("State");
 
                     b.Property<string>("ZipCode");
+
+                    b.Property<string>("profileImageSource");
 
                     b.HasKey("MemberId");
 
@@ -287,7 +319,11 @@ namespace ADSBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AppleToken");
+
                     b.Property<string>("Email");
+
+                    b.Property<string>("GoogleToken");
 
                     b.Property<string>("Key");
 

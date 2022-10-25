@@ -1,6 +1,8 @@
 ﻿using ADSBackend.Configuration;
 using ADSBackend.Data;
 using ADSBackend.Models.Identity;
+using ADSBackend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace ADSBackend
 {
@@ -38,7 +41,7 @@ namespace ADSBackend
 
             // Add application services.
             services.AddTransient<Services.IEmailSender, Services.EmailSender>();
-
+            services.AddSingleton<IHostedService, NotificationSender>();
             // caching
             services.AddMemoryCache();
             services.AddTransient<Services.Cache>();
@@ -46,6 +49,23 @@ namespace ADSBackend
             services.AddTransient<Services.Configuration>();
 
             services.AddMvc();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle("google", options =>
+            {
+                var config = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json", optional: true)
+                        .Build();
+                
+                options.ClientId = config["GoogleClientID"];
+                options.ClientSecret = config["GoogleClientSecret"];
+                options.SaveTokens = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

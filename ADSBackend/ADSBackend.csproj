@@ -22,14 +22,22 @@
     <Compile Remove="Migrations\20191118171817_MessageboardEditTime.Designer.cs" />
     <Compile Remove="Migrations\20191130172400_what.cs" />
     <Compile Remove="Migrations\20191130172400_what.Designer.cs" />
+    <Compile Remove="Migrations\20200124173333_FAQ.cs" />
+    <Compile Remove="Migrations\20200124173333_FAQ.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="File.TypeChecker" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="OneSignal.RestAPIv3.Client" Version="1.1.1" />
     <PackageReference Include="RestSharp" Version="106.6.10" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\announcements\" />
     <Folder Include="wwwroot\images\officers\national\" />
   </ItemGroup>
 
